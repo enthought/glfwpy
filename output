@@ -1,0 +1,5 @@
+['glfwpy', 'glfwpy.utils']
+running build_ext
+cythoning glfwpy/glfw.pyx to glfwpy/glfw.c
+building 'glfwpy' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -O2 -fPIC -I/home/dman/epd72/include/python2.7 -c glfwpy/glfw.c -o build/temp.linux-x86_64-2.7/glfwpy/glfw.o

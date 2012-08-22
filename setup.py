@@ -16,7 +16,7 @@ elif sys.platform == 'win32':
     library_dirs=['C:\Users\dman\Desktop\glfw-2.7.6\lib\win32']
     )]
 elif sys.platform.startswith('linux'):
-    ext_modules = [Extension("glfwpy", ["glfwpy.pyx"],
+    ext_modules = [Extension("glfwpy.glfw", ["glfwpy/glfw.pyx"],
     libraries=['glfw']
     )]
 elif sys.platform.startswith('freebsd'):
