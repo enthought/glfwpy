@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 import sys
@@ -6,33 +6,37 @@ import sys
 platform = sys.platform
 
 if sys.platform == 'darwin':
-    ext_modules = [Extension("glfw", ["glfw.pyx"],
+    ext_modules = [Extension("glfwpy.glfw", ["glfwpy/glfw.pyx"],
         libraries=['glfw'],
         extra_link_args=['-framework', 'Cocoa'])]
 elif sys.platform == 'win32':
     ext_modules = [Extension("glfw", ["glfw.pyx"],
-    libraries=['glfw'],
-    include_dirs=['Add path like c:/foo/bar/baz/glfw-x.x.x/include'],
-    library_dirs=['Add path like c:/foo/bar/bax/glfw-x.x.x/lib/win32']
+    libraries=['glfw', 'opengl32'],
+    include_dirs=['C:\Users\dman\Desktop\glfw-2.7.6\include'],
+    library_dirs=['C:\Users\dman\Desktop\glfw-2.7.6\lib\win32']
     )]
 elif sys.platform.startswith('linux'):
-    ext_modules = [Extension("glfw", ["glfw.pyx"],
-    libraries=['glfw'],
-    include_dirs=['Add path like c:/foo/bar/baz/glfw-x.x.x/include'],
-    library_dirs=['Add path like c:/foo/bar/bax/glfw-x.x.x/lib/win32']
+    ext_modules = [Extension("glfwpy", ["glfwpy.pyx"],
+    libraries=['glfw']
     )]
 elif sys.platform.startswith('freebsd'):
     ext_modules = [Extension("glfw", ["glfw.pyx"],
-    libraries=['glfw'],
-    include_dirs=['Add path like c:/foo/bar/baz/glfw-x.x.x/include'],
-    library_dirs=['Add path like c:/foo/bar/bax/glfw-x.x.x/lib/win32']
+    libraries=['glfw']
     )]
 else:
-    print 'The glfw spaceship has not yet arrived on the exotic platform %s' % (platform)
+    print 'The glfwpy spaceship has not yet arrived on the exotic platform %s' % (platform)
     sys.exit(-1)
 
+print find_packages()
+
 setup(
-  name='Cythonized wrappers for glfw',
+  name='glfwpy',
+  version='0.0.1',
+  author='Enthought, Inc',
+  author_email='info@enthought.com',
+  description='Python wrappers for the glfw cross platform toolkit',
+  url='https://github.com/enthought/glfwpy',
+  packages=find_packages(),
   cmdclass={'build_ext': build_ext},
   ext_modules=ext_modules
 )
