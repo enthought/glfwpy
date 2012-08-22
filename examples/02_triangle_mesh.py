@@ -1,43 +1,43 @@
 from glfwpy.glfw import *
+from glfwpy.utils.obj_loader import ObjGeometry
 import sys
-import numpy as np
 from OpenGL.GL import *
 from OpenGL.arrays import ArrayDatatype
-import ctypes
-
+import time
 
 vertex = """
 #version 330
 in vec3 vin_position;
-in vec3 vin_color;
-out vec3 vout_color;
+in vec3 vin_normal;
+out vec3 vout_normal;
+
+uniform mat4 MVP;
 
 void main(void)
 {
-    vout_color = vin_color;
-    gl_Position = vec4(vin_position, 1.0);
+    vout_normal = vin_normal;
+    gl_Position = vec4(vin_position.xyz, 1.0);
 }
 """
 
 
 fragment = """
 #version 330
-in vec3 vout_color;
+in vec3 vout_normal;
 out vec4 fout_color;
 
 void main(void)
 {
-    fout_color = vec4(vout_color, 1.0);
+    fout_color = vec4(vout_normal, 1.0);
+
 }
 """
 
-vertex_data = np.array([0.75, 0.75, 0.0,
-                        0.75, -0.75, 0.0,
-                        -0.75, -0.75, 0.0], dtype=np.float32)
+geom = ObjGeometry('../art/bunny_with_normals.obj')
 
-color_data = np.array([1, 0, 0,
-                        0, 1, 0,
-                        0, 0, 1], dtype=np.float32)
+vertex_data = geom.vertex_arr
+index_data = geom.index_arr
+normal_data = geom.normal_arr
 
 
 class ShaderProgram(object):
@@ -83,7 +83,8 @@ class ShaderProgram(object):
 def foo(x, y):
     print x, y
 
-if __name__ == "__main__":
+
+def main():
     if not Init():
         print 'GLFW initialization failed'
         sys.exit(-1)
@@ -92,7 +93,6 @@ if __name__ == "__main__":
     OpenWindowHint(OPENGL_VERSION_MINOR, 2)
     OpenWindowHint(OPENGL_PROFILE, OPENGL_CORE_PROFILE)
     OpenWindowHint(OPENGL_FORWARD_COMPAT, GL_TRUE)
-
     if not OpenWindow(1400, 800, 0, 0, 0, 0, 32, 0, WINDOW):
         print "OpenWindow failed"
         Terminate()
@@ -108,37 +108,43 @@ if __name__ == "__main__":
     print 'GLSL Version: %s' % (glGetString(GL_SHADING_LANGUAGE_VERSION))
     print 'Renderer: %s' % (glGetString(GL_RENDERER))
 
-    glClearColor(0.95, 1.0, 0.95, 0)
-
+    glEnable(GL_DEPTH_TEST)
+    glViewport(0, 0, 1400, 800)
+    glClearColor(0.8, 1.0, 0.8, 1.0)
     program = ShaderProgram(fragment=fragment, vertex=vertex)
 
     vao_id = glGenVertexArrays(1)
+    vbo_id = glGenBuffers(3)
     glBindVertexArray(vao_id)
-
-    vbo_id = glGenBuffers(2)
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo_id[0])
     glBufferData(GL_ARRAY_BUFFER, ArrayDatatype.arrayByteCount(vertex_data), vertex_data, GL_STATIC_DRAW)
-    glVertexAttribPointer(program.attribute_location('vin_position'), 3, GL_FLOAT, GL_FALSE, 0, ctypes.c_voidp(0))
+    glVertexAttribPointer(program.attribute_location('vin_position'), 3, GL_FLOAT, GL_FALSE, 0, None)
     glEnableVertexAttribArray(0)
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo_id[1])
-    glBufferData(GL_ARRAY_BUFFER, ArrayDatatype.arrayByteCount(color_data), color_data, GL_STATIC_DRAW)
-    glVertexAttribPointer(program.attribute_location('vin_color'), 3, GL_FLOAT, GL_FALSE, 0, ctypes.c_voidp(0))
+    glBufferData(GL_ARRAY_BUFFER, ArrayDatatype.arrayByteCount(normal_data), normal_data, GL_STATIC_DRAW)
+    glVertexAttribPointer(program.attribute_location('vin_normal'), 3, GL_FLOAT, GL_FALSE, 0, None)
     glEnableVertexAttribArray(1)
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0)
-    glBindVertexArray(0)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_id[2])
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ArrayDatatype.arrayByteCount(index_data), index_data, GL_STATIC_DRAW)
 
+    glBindVertexArray(0)
     running = True
 
     while running:
-        glClear(GL_COLOR_BUFFER_BIT)
+        t1 = time.clock()
 
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glUseProgram(program.program_id)
         glBindVertexArray(vao_id)
-        glDrawArrays(GL_TRIANGLES, 0, 3)
+        glDrawElements(GL_TRIANGLES, index_data.shape[0] * index_data.shape[1], GL_UNSIGNED_INT, None)
         glUseProgram(0)
         glBindVertexArray(0)
         SwapBuffers()
+        print time.clock() - t1
         running = running and GetWindowParam(OPENED)
+
+if __name__ == "__main__":
+    main()
