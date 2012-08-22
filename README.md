@@ -3,7 +3,7 @@ glfwpy
 
 Pythonic wrappers for glfw that support modern opengl (3.2+). Version 4.3 which is the latest version as of this writing is supported.
 
-![alt text](https://github.com/enthought/glfwpy/blob/master/screenshots/bunny.png "Stanford bunny rendered using opengl")
+![stanford bunny](https://github.com/enthought/glfwpy/raw/master/screenshots/bunny.png "Stanford bunny rendered using opengl")
 
 
 Requirements:
