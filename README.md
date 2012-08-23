@@ -1,7 +1,7 @@
 glfwpy
 ======
 
-Pythonic wrappers for glfw that support modern opengl (3.2+). Version 4.3 which is the latest version as of this writing is supported.
+Pythonic wrappers for glfw that support modern opengl (3.2+). Version 4.3 which is the latest supported version as of this writing.
 
 ![stanford bunny](https://github.com/enthought/glfwpy/raw/master/screenshots/bunny.png "Stanford bunny rendered using opengl")
 
@@ -10,7 +10,8 @@ Supported Platforms:
 1. Windows
 2. OSX
 3. Linux
-4. FreeBSD coming soon
+4. FreeBSD - Now supported!
+5. Solaris - Coming soon
 
 Requirements:
 -------------
@@ -26,7 +27,6 @@ Documentation:
 
 Caveats:
 --------
-The following part of the glfw api are not wrapped
 1. Imaging functions (Users are expected to use a python imaging library to load textures)
 2. Threading functions (Users are expected to use the python threading library)
 3. glfwGetProcAddress

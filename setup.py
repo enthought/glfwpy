@@ -10,7 +10,7 @@ if sys.platform == 'darwin':
         libraries=['glfw'],
         extra_link_args=['-framework', 'Cocoa'])]
 elif sys.platform == 'win32':
-    ext_modules = [Extension("glfw", ["glfw.pyx"],
+    ext_modules = [Extension("glfw.glfw", ["glfwpy/glfw.pyx"],
     libraries=['glfw', 'opengl32'],
     include_dirs=['C:\Users\dman\Desktop\glfw-2.7.6\include'],
     library_dirs=['C:\Users\dman\Desktop\glfw-2.7.6\lib\win32']
@@ -20,7 +20,9 @@ elif sys.platform.startswith('linux'):
     libraries=['glfw']
     )]
 elif sys.platform.startswith('freebsd'):
-    ext_modules = [Extension("glfw", ["glfw.pyx"],
+    ext_modules = [Extension("glfwpy.glfw", ["glfwpy/glfw.pyx"],
+    include_dirs=['/usr/local/include'],
+    library_dirs=['/usr/local/lib'],
     libraries=['glfw']
     )]
 else:
