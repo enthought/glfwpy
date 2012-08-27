@@ -80,8 +80,8 @@ class ShaderProgram(object):
         return glGetAttribLocation(self.program_id, name)
 
 
-def foo(x, y):
-    print x, y
+def key_callback(x, y):
+    print 'Key: %s Action: %s pressed' % (x, y)
 
 if __name__ == "__main__":
     if not Init():
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         Terminate()
         sys.exit(-1)
 
-    SetKeyCallback(foo)
+    SetKeyCallback(key_callback)
 
     SetWindowTitle("Modern opengl example")
     Enable(AUTO_POLL_EVENTS)

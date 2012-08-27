@@ -1,6 +1,7 @@
 from glfw cimport *
 from cython import address
 from libc.stdlib cimport malloc, free
+from traceback import print_exc
 
 _callback_key = None
 _callback_char = None
@@ -13,28 +14,52 @@ _callback_window_refresh = None
 
 
 cdef void c_callback_key(int character, int action) with gil:
-    _callback_key(character, action)
+    try:
+        _callback_key(character, action)
+    except:
+        print_exc()
 
 cdef void c_callback_char(int character, int action) with gil:
-    _callback_char(character, action)
+    try:
+        _callback_char(character, action)
+    except:
+        print_exc()
 
 cdef void c_callback_mouse_button(int character, int action) with gil:
-    _callback_mouse_button(character, action)
+    try:
+        _callback_mouse_button(character, action)
+    except:
+        print_exc()
 
 cdef void c_callback_mouse_pos(int x, int y) with gil:
-    _callback_mouse_pos(x, y)
+    try:
+        _callback_mouse_pos(x, y)
+    except:
+        print_exc()
 
 cdef void c_callback_mouse_wheel(int pos) with gil:
-    _callback_mouse_wheel(pos)
+    try:
+        _callback_mouse_wheel(pos)
+    except:
+        print_exc()
 
 cdef void c_callback_window_size(int width, int height) with gil:
-    _callback_window_size(width, height)
+    try:
+        _callback_window_size(width, height)
+    except:
+        print_exc()
 
 cdef int c_callback_window_close() with gil:
-    return _callback_window_close()
+    try:
+        return _callback_window_close()
+    except:
+        print_exc()
 
 cdef void c_callback_window_refresh() with gil:
-    _callback_window_refresh()
+    try:
+        _callback_window_refresh()
+    except:
+        print_exc()
 
 #    enum version:
 VERSION_MAJOR = GLFW_VERSION_MAJOR
