@@ -116,17 +116,25 @@ def main():
     glBindVertexArray(vao_id)
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo_id[0])
-    glBufferData(GL_ARRAY_BUFFER, ArrayDatatype.arrayByteCount(vertex_data), vertex_data, GL_STATIC_DRAW)
-    glVertexAttribPointer(program.attribute_location('vin_position'), 3, GL_FLOAT, GL_FALSE, 0, None)
+    glBufferData(GL_ARRAY_BUFFER,
+        ArrayDatatype.arrayByteCount(vertex_data),
+        vertex_data, GL_STATIC_DRAW)
+    glVertexAttribPointer(program.attribute_location('vin_position'),
+        3, GL_FLOAT, GL_FALSE, 0, None)
     glEnableVertexAttribArray(0)
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo_id[1])
-    glBufferData(GL_ARRAY_BUFFER, ArrayDatatype.arrayByteCount(normal_data), normal_data, GL_STATIC_DRAW)
-    glVertexAttribPointer(program.attribute_location('vin_normal'), 3, GL_FLOAT, GL_FALSE, 0, None)
+    glBufferData(GL_ARRAY_BUFFER,
+        ArrayDatatype.arrayByteCount(normal_data),
+        normal_data, GL_STATIC_DRAW)
+    glVertexAttribPointer(program.attribute_location('vin_normal'),
+        3, GL_FLOAT, GL_FALSE, 0, None)
     glEnableVertexAttribArray(1)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_id[2])
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ArrayDatatype.arrayByteCount(index_data), index_data, GL_STATIC_DRAW)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+        ArrayDatatype.arrayByteCount(index_data),
+        index_data, GL_STATIC_DRAW)
 
     glBindVertexArray(0)
     running = True
@@ -137,7 +145,9 @@ def main():
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glUseProgram(program.program_id)
         glBindVertexArray(vao_id)
-        glDrawElements(GL_TRIANGLES, index_data.shape[0] * index_data.shape[1], GL_UNSIGNED_INT, None)
+        glDrawElements(GL_TRIANGLES,
+            index_data.shape[0] * index_data.shape[1],
+            GL_UNSIGNED_INT, None)
         glUseProgram(0)
         glBindVertexArray(0)
         SwapBuffers()
